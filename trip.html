@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Little Adventure 💗</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-family: "Poppins", Arial, sans-serif;
+
+      background: linear-gradient(
+        135deg,
+        #ffe6ef,
+        #f5e6ff
+      );
+
+      overflow: hidden;
+    }
+
+    /* ---------------- CARD ---------------- */
+
+    .card {
+      width: 90%;
+      max-width: 500px;
+
+      min-height: 400px;
+
+      padding: 45px 30px;
+
+      background: rgba(255, 255, 255, 0.92);
+
+      border-radius: 30px;
+
+      box-shadow:
+        0 20px 50px rgba(130, 80, 130, 0.15);
+
+      text-align: center;
+
+      position: relative;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+
+    /* ---------------- QUESTION ---------------- */
+
+    #questionScreen {
+      width: 100%;
+    }
+
+    .main-emoji {
+      font-size: 65px;
+
+      margin-bottom: 15px;
+
+      animation: float 2s ease-in-out infinite;
+    }
+
+
+    h1 {
+      margin: 10px 0;
+
+      font-size: 32px;
+
+      color: #654b67;
+
+      font-weight: 600;
+    }
+
+
+    .question-text {
+      margin-top: 12px;
+
+      font-size: 18px;
+
+      color: #766078;
+
+      line-height: 1.5;
+    }
+
+
+    /* ---------------- NAME INPUT ---------------- */
+
+    #nameInput {
+      width: 100%;
+
+      margin-top: 20px;
+
+      padding: 12px 16px;
+
+      border-radius: 20px;
+
+      border: 2px solid #f3d3e0;
+
+      font-family: inherit;
+
+      font-size: 16px;
+
+      color: #654b67;
+
+      outline: none;
+
+      text-align: center;
+    }
+
+    #nameInput:focus {
+      border-color: #ff7ca3;
+    }
+
+    /* ---------------- BUTTON AREA ---------------- */
+
+    .buttons {
+      width: 100%;
+
+      height: 150px;
+
+      margin-top: 25px;
+
+      position: relative;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      gap: 25px;
+    }
+
+
+    /* ---------------- COMMON BUTTON ---------------- */
+
+    button {
+      border: none;
+
+      padding: 14px 30px;
+
+      border-radius: 30px;
+
+      font-size: 17px;
+
+      font-family: inherit;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+
+    /* ---------------- YES BUTTON ---------------- */
+
+    #yesBtn {
+      background: #ff7ca3;
+
+      color: white;
+
+      box-shadow:
+        0 8px 20px rgba(255, 124, 163, 0.35);
+
+      z-index: 2;
+    }
+
+
+    #yesBtn:hover {
+      transform: scale(1.08);
+
+      box-shadow:
+        0 10px 25px rgba(255, 124, 163, 0.45);
+    }
+
+
+    #yesBtn:active {
+      transform: scale(0.96);
+    }
+
+
+    /* ---------------- NO BUTTON ---------------- */
+
+    #noBtn {
+      position: absolute;
+
+      left: 58%;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      background: #eeeeef;
+
+      color: #686868;
+
+      box-shadow:
+        0 6px 15px rgba(0, 0, 0, 0.08);
+
+      z-index: 3;
+
+      transition:
+        left 0.25s ease,
+        top 0.25s ease;
+    }
+
+
+    /* ---------------- SUCCESS SCREEN ---------------- */
+
+    .success {
+      display: none;
+
+      width: 100%;
+
+      text-align: center;
+    }
+
+
+    .success-heart {
+      font-size: 75px;
+
+      margin-bottom: 10px;
+
+      animation: heartbeat 1.2s infinite;
+    }
+
+
+    .success h1 {
+      color: #ff6f99;
+
+      font-size: 34px;
+    }
+
+
+    .success-text {
+      color: #766078;
+
+      font-size: 18px;
+
+      line-height: 1.7;
+
+      margin-top: 15px;
+    }
+
+
+    /* ---------------- ANIMATIONS ---------------- */
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.18);
+      }
+    }
+
+
+    /* ---------------- MOBILE ---------------- */
+
+    @media (max-width: 500px) {
+
+      .card {
+        min-height: 380px;
+
+        padding: 35px 20px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+
+      .question-text {
+        font-size: 16px;
+      }
+
+      .main-emoji {
+        font-size: 55px;
+      }
+
+      button {
+        padding: 12px 24px;
+
+        font-size: 15px;
+      }
+
+      .buttons {
+        height: 160px;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+
+  <!-- ================= QUESTION SCREEN ================= -->
+
+  <div class="card">
+
+    <div id="questionScreen">
+
+      <div class="main-emoji">
+        ✈️🌸
+      </div>
+
+
+      <h1>
+        Trip together?
+      </h1>
+
+
+      <p class="question-text">
+        Should we go on a little adventure? 🌸
+      </p>
+
+      <input
+        type="text"
+        id="nameInput"
+        placeholder="What's your name? 💌"
+        autocomplete="off"
+      />
+
+      <!-- BUTTON CONTAINER -->
+
+      <div class="buttons">
+
+        <!-- YES -->
+
+        <button id="yesBtn">
+          Yes 💕
+        </button>
+
+
+        <!-- NO -->
+
+        <button id="noBtn">
+          No 🙈
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ================= SUCCESS SCREEN ================= -->
+
+    <div id="successScreen" class="success">
+
+      <div class="success-heart">
+        💖
+      </div>
+
+
+      <h1>
+        Yayyy! 🥰
+      </h1>
+
+
+      <p class="success-text">
+        Thanks! 💕
+        <br>
+        Date will be informed later ✨
+      </p>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script>
+
+    const yesBtn =
+      document.getElementById("yesBtn");
+
+    const noBtn =
+      document.getElementById("noBtn");
+
+    const questionScreen =
+      document.getElementById("questionScreen");
+
+    const successScreen =
+      document.getElementById("successScreen");
+
+    const buttonArea =
+      document.querySelector(".buttons");
+
+    const nameInput =
+      document.getElementById("nameInput");
+
+
+    /* -----------------------------------------
+       GOOGLE FORM CONFIG
+
+       1. Open your Google Form -> ⋮ menu ->
+          "Get pre-filled link" -> fill a dummy
+          answer -> "Get link".
+
+       2. Copy that URL. Replace "viewform"
+          with "formResponse" -> that's FORM_ACTION.
+
+       3. In that same URL you'll see something
+          like entry.123456789=Dummy -> that
+          number is NAME_ENTRY_ID.
+    ----------------------------------------- */
+
+    const FORM_ACTION =
+      "https://docs.google.com/forms/d/e/1FAIpQLSdZmH8oZytQNBxR6OSIo0TlXYvezSq-VRK5tdBs9JCOi5vPSQ/formResponse";
+
+    const NAME_ENTRY_ID =
+      "entry.1780254190";
+
+
+    function submitNameToGoogleForm(name) {
+
+      const formData = new FormData();
+
+      formData.append(NAME_ENTRY_ID, name);
+
+      /*
+        Google Forms doesn't send CORS headers,
+        so the response can't be read - "no-cors"
+        just fires the request and moves on.
+      */
+
+      fetch(FORM_ACTION, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData,
+      }).catch(function () {
+        /* silently ignore - can't inspect response anyway */
+      });
+
+    }
+
+
+    /* -----------------------------------------
+       NO BUTTON MOVEMENT
+    ----------------------------------------- */
+
+    let moveTimeout;
+
+
+    function moveNoButton() {
+
+      clearTimeout(moveTimeout);
+
+
+      const areaWidth =
+        buttonArea.clientWidth;
+
+      const areaHeight =
+        buttonArea.clientHeight;
+
+
+      const buttonWidth =
+        noBtn.offsetWidth;
+
+      const buttonHeight =
+        noBtn.offsetHeight;
+
+
+      /*
+        Keep the button completely
+        inside the button area.
+      */
+
+      const maxX =
+        areaWidth - buttonWidth;
+
+      const maxY =
+        areaHeight - buttonHeight;
+
+
+      const randomX =
+        Math.random() * maxX;
+
+
+      const randomY =
+        Math.random() * maxY;
+
+
+      noBtn.style.left =
+        `${randomX}px`;
+
+      noBtn.style.top =
+        `${randomY}px`;
+
+      noBtn.style.transform =
+        "none";
+    }
+
+
+
+    /* -----------------------------------------
+       DESKTOP
+
+       Allow the cursor to actually
+       reach the No button first.
+
+       Then move it after 400ms.
+    ----------------------------------------- */
+
+    noBtn.addEventListener(
+      "mouseenter",
+      function () {
+
+        clearTimeout(moveTimeout);
+
+
+        moveTimeout =
+          setTimeout(
+            function () {
+
+              moveNoButton();
+
+            },
+            400
+          );
+
+      }
+    );
+
+
+
+    /* -----------------------------------------
+       MOBILE
+
+       When the user touches No,
+       immediately move it.
+    ----------------------------------------- */
+
+    noBtn.addEventListener(
+      "touchstart",
+      function (event) {
+
+        event.preventDefault();
+
+        moveNoButton();
+
+      }
+    );
+
+
+
+    /* -----------------------------------------
+       EXTRA PROTECTION
+
+       If somehow the user manages
+       to click No, move it again.
+    ----------------------------------------- */
+
+    noBtn.addEventListener(
+      "click",
+      function (event) {
+
+        event.preventDefault();
+
+        moveNoButton();
+
+      }
+    );
+
+
+
+    /* -----------------------------------------
+       YES BUTTON ❤️
+    ----------------------------------------- */
+
+    yesBtn.addEventListener(
+      "click",
+      function () {
+
+        const name = nameInput.value.trim();
+
+        if (!name) {
+          nameInput.focus();
+          nameInput.style.borderColor = "#ff4d6d";
+          return;
+        }
+
+        submitNameToGoogleForm(name);
+
+        /*
+          Hide question
+        */
+
+        questionScreen.style.display =
+          "none";
+
+
+        /*
+          Hide No completely
+        */
+
+        noBtn.style.display =
+          "none";
+
+
+        /*
+          Show success message
+        */
+
+        successScreen.style.display =
+          "block";
+
+      }
+    );
+
+  </script>
+
+</body>
+
+</html>
